@@ -49,14 +49,68 @@ One of the aspects of infrastructure as code (IaC) is Orchestration. With IaC, y
 ![AltText](diagram.png)
 
 ### **Our Architecture of Configuration Management using Infrastructure as Code with Ansible** (diagram breakdown):
-* **Vagrant**: Local Host (on-prem) or on the cloud (AWS)
+* Local Host (on-prem: Vagrant) or on the cloud (AWS)
 * We can use SSH as authentication process or password (usually provided by the client)
 * We set up a controller: **Ansible** (using Vagrant or AWS) will control the **Agent Node(s)** and it can install all dependencies for us automatically, change the IP, run updates, restart etc.
 * Expected Nodes: **App VM** and a **DB VM**
 * We will automate and codify using IaC.
 
+<br>
+
+## Steps:
+
+1. Spin up an Instance (with 'ami-0136ddddd07f0584f' AMI).
+
+2. Run the updates:
+
+```shell
+sudo apt update
+
+sudo apt upgrade -y
+```
+
+3. Install `software-properties-common` and add the Ansible location:
+
+```shell
+sudo apt install software-properties-common
+
+sudo apt-add-repository ppa:ansible/ansible
+
+# Press Enter
+```
+
+4. Update the system and Install Ansible:
+
+```shell
+sudo apt update -y
+
+sudo apt install ansible -y
+
+ansible --version
+```
+
+5. Check the location of Ansible:
+
+```shell
+cd /etc/ansible/
+
+#optional, you can install tree for a nicer view
+sudo apt install tree
+tree
+```
 
 
+6. On a new Git Bash window:
+```shell
+scp -i "~/.ssh/tech254.pem" ~/.ssh/tech254.pem ubuntu@<<Public Instance IP>>:~/.ssh
+```
+
+7. Back in your Instance Bash connection, check it has been saved:
+
+```shell
+cd ~/.ssh
+tree
+```
 <br>
 
 Sources:
