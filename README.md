@@ -59,7 +59,7 @@ One of the aspects of infrastructure as code (IaC) is Orchestration. With IaC, y
 
 ## Steps:
 
-1. Spin up an Instance (with 'ami-0136ddddd07f0584f' AMI).
+1. Spin up an Instance (with 'ami-0136ddddd07f0584f' AMI). This will be the Ansible Controller instance.
 
 2. Run the updates:
 
@@ -100,7 +100,7 @@ tree
 ```
 
 
-6. On a new Git Bash window:
+6. On a new Git Bash window, copy the .pem file:
 ```shell
 scp -i "~/.ssh/tech254.pem" ~/.ssh/tech254.pem ubuntu@<<Public Instance IP>>:~/.ssh
 ```
@@ -111,6 +111,22 @@ scp -i "~/.ssh/tech254.pem" ~/.ssh/tech254.pem ubuntu@<<Public Instance IP>>:~/.
 cd ~/.ssh
 tree
 ```
+
+8. Create an AMI from the Ansible Controller instance, then spin up 2 new Instances, 'ansible_app' and 'ansible_db' which will be our app and database instances.
+
+9. In the 2 new instances, run the updates.
+
+```shell
+sudo apt update
+sudo apt upgrade -y
+```
+
+10. Next, go to that separate Git Bash window and for each instance, copy the .pem file:
+
+```shell
+scp -i "~/.ssh/tech254.pem" ~/.ssh/tech254.pem ubuntu@<<Public Instance IP>>:~/.ssh
+```
+
 <br>
 
 Sources:
