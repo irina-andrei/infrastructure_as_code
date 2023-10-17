@@ -46,7 +46,7 @@ With IaC, you can use Orchestration tools to **automate the creation and configu
 
 <br>
 
-![AltText](diagram.png)
+![AltText](Images/diagram.png)
 
 ### **Our Architecture of Configuration Management using Infrastructure as Code with Ansible** (diagram breakdown):
 * Local Host (on-prem: Vagrant) or on the cloud (AWS)
@@ -56,6 +56,46 @@ With IaC, you can use Orchestration tools to **automate the creation and configu
 * We will automate and codify using IaC.
 
 <br>
+
+
+## Why Ansible?
+To put it in the simplest terms, **Ansible lets you do things remotely that you would otherwise do at the command line**. Specifically, it's used to *install software and change system settings*. It puts a machine into the state in which you want it to remain and keeps it there. 
+
+Ansible is a powerful tool that can help you automate various tasks related to IT infrastructure and application deployment. Some of the benefits of using Ansible are:
+
+* It is **simple and easy to use**: it uses *a human-readable language called YAML* to write playbooks, which are files that define the desired state and actions of the managed systems. 
+
+* It is **agentless and secure**: does not require any agents or daemons to be installed on the managed nodes, which reduces the overhead and complexity of managing them.
+
+* It is **cross-platform and compatible**: can manage systems running on various operating systems, such as Linux, Windows, MacOS, FreeBSD etc. 
+
+* It is **modular and extensible**: has a large collection of modules that can perform various tasks, such as installing software, configuring system settings, managing users and groups etc. 
+
+<br>
+
+
+
+## Yaml
+YAML is *a data serialization language* that is designed to be human-readable and easy to use. It is often used for configuration files and data exchange between applications. YAML stands for **Yet Another Markup Language** (or **YAML Ain’t Markup Language**), which means that it is not intended for creating documents like HTML or XML, but rather for representing data structures like lists, maps, scalars etc.
+
+#### **Yaml** is used in *Ansible, Kubernetes, Docker, OpenStack, Swagger* and many others.
+
+### Some of the features of YAML are:
+
+* It uses indentation to indicate the level of nesting of data elements.
+* It supports both basic data types (such as strings, numbers, booleans etc) and complex data types (such as sequences, mappings, sets etc).
+* It allows custom data types and tags to extend the standard data types.
+* It can represent multiple documents in a single file using the document separator `---`.
+* It can include comments using the `#` symbol.
+* It can use anchors and aliases to reuse data elements within a document.
+* It can use references to external files using the `!include` tag.
+
+
+### Very important: `Indentation matters!` - do not use tab, always use 2 spaces.
+
+<br>
+
+
 
 ## Steps:
 
@@ -117,8 +157,7 @@ tree
 9. In the 2 new instances, run the updates.
 
 ```shell
-sudo apt update
-sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -y
 ```
 
 10. Next, go to that separate Git Bash window and for each instance, copy the .pem file:
@@ -126,6 +165,222 @@ sudo apt upgrade -y
 ```shell
 scp -i "~/.ssh/tech254.pem" ~/.ssh/tech254.pem ubuntu@<<Public Instance IP>>:~/.ssh
 ```
+
+11. Don't forget to change the permissions for the key:
+
+```shell
+sudo chmod 400 tech254.pem
+```
+
+You can check permissions with:
+
+```shell
+ls -l 
+
+# alternatively:
+ll 
+```
+
+12. Next we will add the App instance IP to `hosts` so we can access the App Instance. We will modify the `hosts` file:
+
+```shell
+# go back to etc/ansible if you have changed directories
+cd /etc/ansible/
+
+# modify file 'hosts'; this is where you add IPs to access.
+sudo nano hosts
+```
+
+![AltText](Images/hosts.png)
+
+
+At the end of the file, add:
+
+```shell
+
+[web]
+ec2-instance ansible_host=APP-PUBLIC-IP ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/.ssh/tech254.pem
+# Status Code is: 200
+#make sure you run: sudo chmod 400 tech254.pem
+
+```
+
+![AltText](Images/hosts2.png)
+
+13. To check it was saved correctly:
+
+```shell
+# Telling Ansible to ping this endpoint
+sudo ansible web -m ping
+```
+
+![AltText](Images/web_ping)
+
+
+14. Getting details of the Instance OS:
+
+```shell
+sudo ansible web -a "uname -a"
+```
+
+![AltText](Images/web_uname)
+
+15. You can also find out where the instance is running:
+
+```shell
+# find where it's running
+sudo ansible web -a "date"
+```
+
+![AltText](Images/web_date.png)
+
+
+
+<br>
+
+
+## Ansible Playbooks
+
+--------> Why use Playbooks?
+
+Benefits
+
+
+### a) Install-nginx Playbook
+
+1. Creating and editing **the Install-nginx Playbook**:
+
+```shell
+# needs to be in the default location: /etc/ansible
+
+sudo nano install-nginx.yaml 
+# '.yml' works too
+```
+
+2. Add the following commands:
+
+```shell
+# Creating a Playbook to provision nginx Web Server in the web-node
+
+---
+# Yaml file starts with 3 dashes
+
+# Where do you want to install or run this playbook
+- hosts: web
+
+# find the facts - see the logs (optional)
+  gather_facts: yes
+
+# provide admin access to this playbook (telling it to use sudo)
+  become: true
+
+# provide the actual instructions - install nginx
+  tasks:
+  - name: provision/install/configure Nginx
+    apt: pkg=nginx state=present
+# ensuring nginx is running/enabled
+
+```
+
+![AltText](Images/install_nginx_yaml.png)
+
+
+3. To run the Install-nginx Playbook:
+
+```shell
+# Running the playbook
+sudo ansible-playbook install-nginx.yaml
+```
+
+![AltText](Images/successful_nginx_install.png)
+
+4. Check the status:
+
+```shell 
+sudo ansible web -a "sudo systemctl status nginx"
+```
+
+![AltText](Images/status_nginx.png)
+
+
+### b) Install-node.js Playbook
+
+1. Creating and editing **the Install-node.js Playbook**:
+
+```shell
+# needs to be in the default location: /etc/ansible
+sudo nano install-nodejs.yaml
+```
+
+2. Add the following commands:
+
+```shell
+# Creating a Playbook to provision node.js
+
+---
+# Yaml file starts with 3 dashes
+
+# Where do you want to install or run this playbook
+- hosts: web
+
+# find the facts - see the logs (optional)
+  gather_facts: yes
+
+# provide admin access to this playbook (telling it to use sudo)
+  become: true
+
+# provide the actual instructions - install node.js
+  tasks:
+  - name: Install the NodeSource Node.js 12.x release PPA
+    shell: "curl -sL https://deb.nodesource.com/setup_12.x | bash -"
+
+  - name: Install Node.js
+    apt:
+      name: nodejs
+      state: present
+
+  - name: Check Node.js version
+    shell: "node -v"
+    register: node_version
+
+  - name: Display Node.js version
+    debug:
+      msg: "Node.js version is {{ node_version.stdout }}"
+
+  - name: Check NPM version
+    shell: "npm -v"
+    register: npm_version
+
+  - name: Display NPM version
+    debug:
+      msg: "NPM version is {{ npm_version.stdout }}"
+
+```
+
+![AltText](Images/install_nodejs_yaml.png)
+
+3. To run the Install-node.js Playbook:
+
+```shell
+# Running the playbook
+sudo ansible-playbook install-nodejs.yaml
+```
+
+![AltText](Images/successful_nodejs_install.png)
+
+<br>
+
+### Useful command
+
+Don't forget, if you want to leave an instance you've accessed through SSH, simply:
+
+```shell
+exit
+```
+
+You can also put the key in the `root` directory:
+
+![AltText](Images/put_key_in_the_root_directory.png)
 
 <br>
 
@@ -138,3 +393,7 @@ Sources:
 - [Infrastructure Configuration - code academy](https://www.codecademy.com/article/infrastructure-configuration)
 - [IaC Configuration management - devopscube.com](https://devopscube.com/infrastructure-as-code-configuration-management/)
 - [IaC Guide - turing.com](https://www.turing.com/blog/infrastructure-as-code-iac-guide/)
+- [Yaml - wiki](https://en.wikipedia.org/wiki/YAML)
+- [RedHat - Yaml](https://www.redhat.com/en/topics/automation/what-is-yaml)
+- [Reasons for Ansible - RedHat](https://developers.redhat.com/articles/2021/09/27/four-reasons-developers-should-use-ansible)
+- [Ansible.com](https://www.ansible.com/overview/how-ansible-works)
