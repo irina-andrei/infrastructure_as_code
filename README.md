@@ -99,14 +99,12 @@ YAML is *a data serialization language* that is designed to be human-readable an
 
 ## Steps:
 
-1. Spin up an Instance (with 'ami-0136ddddd07f0584f' AMI). This will be the Ansible Controller instance.
+1. Spin up an Instance (with 'ami-0136ddddd07f0584f' AMI). This will be **the Ansible Controller instance**.
 
 2. Run the updates:
 
 ```shell
-sudo apt update
-
-sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -y
 ```
 
 3. Install `software-properties-common` and add the Ansible location:
@@ -214,7 +212,7 @@ ec2-instance ansible_host=APP-PUBLIC-IP ansible_user=ubuntu ansible_ssh_private_
 sudo ansible web -m ping
 ```
 
-![AltText](Images/web_ping)
+![AltText](Images/web_ping.png)
 
 
 14. Getting details of the Instance OS:
@@ -223,7 +221,7 @@ sudo ansible web -m ping
 sudo ansible web -a "uname -a"
 ```
 
-![AltText](Images/web_uname)
+![AltText](Images/web_uname.png)
 
 15. You can also find out where the instance is running:
 
@@ -241,9 +239,15 @@ sudo ansible web -a "date"
 
 ## Ansible Playbooks
 
---------> Why use Playbooks?
+Ansible Playbooks offer **a repeatable, re-usable, simple configuration management and multi-machine deployment system**, one that is well suited to deploying complex applications. If you need to execute a task with Ansible more than once, write a playbook and put it under source control. Then you can use the playbook to push out new configuration or confirm the configuration of remote systems. 
 
-Benefits
+Playbooks are expressed in **YAML format** with a minimum of syntax. 
+A playbook is composed of one or more 'plays' in an ordered list. The terms *'playbook' and 'play' are sports analogies*. Each play executes part of the overall goal of the playbook, running one or more tasks. **Each task calls an Ansible module**.
+
+Playbooks can:
+* declare configurations
+* orchestrate steps of any manual ordered process, on multiple sets of machines, in a defined order
+* launch tasks synchronously or asynchronously
 
 
 ### a) Install-nginx Playbook
@@ -397,3 +401,4 @@ Sources:
 - [RedHat - Yaml](https://www.redhat.com/en/topics/automation/what-is-yaml)
 - [Reasons for Ansible - RedHat](https://developers.redhat.com/articles/2021/09/27/four-reasons-developers-should-use-ansible)
 - [Ansible.com](https://www.ansible.com/overview/how-ansible-works)
+- [Ansible Docs](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html)
