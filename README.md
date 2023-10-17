@@ -2,7 +2,7 @@
 
 
 ## What is Infrastructure as Code? 
-Infrastructure as code (IaC) is a way of managing and provisioning infrastructure, such as servers, networks, storage, and databases, through code instead of manual processes. With IaC, you can define your infrastructure specifications in configuration files that are easy to edit and distribute. You can also use automation tools to apply those specifications to your target environments, ensuring that they are always consistent and up-to-date. IaC is a key practice of DevOps, as it enables faster and more reliable delivery of applications and their supporting infrastructure.
+Infrastructure as code (IaC) is a way of managing and provisioning infrastructure, such as servers, networks, storage, and databases through code instead of manual processes. With IaC, you can define your infrastructure specifications in configuration files that are easy to edit and distribute. You can also use automation tools to apply those specifications to your target environments, ensuring that they are always consistent and up-to-date. IaC is a key practice of DevOps, as it enables faster and more reliable delivery of applications and their supporting infrastructure.
 
 ### Some of the benefits of IaC are:
 
@@ -15,16 +15,16 @@ Infrastructure as code (IaC) is a way of managing and provisioning infrastructur
 
 ## Configuration Management
 
-Configuration management is the process of setting up and maintaining the properties and behavior of the infrastructure components, such as servers, networks, storage, and databases. Configuration can include aspects such as installing software packages, setting up user accounts, configuring security policies, managing network connections, and so on. Configuration can be done manually or automatically through code.
+Configuration management is **the process of setting up and maintaining the properties and behavior of the infrastructure components** such as servers, networks, storage and databases. Configuration can include aspects such as installing software packages, setting up user accounts, configuring security policies, managing network connections and so on. Configuration can be done manually or automatically through code.
 
-With infrastructure as code (IaC), configuration is done through code instead of manual processes. This means that you can define your configuration specifications in configuration files that are easy to edit and distribute. You can also use automation tools to apply those specifications to your target environments, ensuring that they are always consistent and up-to-date. Configuration management is a key aspect of IaC, as it helps you to avoid configuration drifts or missing dependencies that can cause deployment issues or runtime failures.
+With infrastructure as code (IaC), **configuration is done through code instead of manual processes**. This means that you can define your configuration specifications in configuration files that are easy to edit and distribute. You can also use automation tools to apply those specifications to your target environments, ensuring that they are always consistent and up-to-date. Configuration management is a key aspect of IaC, as it helps you to avoid configuration drifts or missing dependencies that can cause deployment issues or runtime failures.
 
 Some examples of configuration management tools are:
 
-* **Ansible**: An open source platform that automates infrastructure provisioning, configuration management, application deployment, and orchestration. Ansible uses a declarative language called YAML to define configuration as code.
-* **Chef**: An open source tool that automates the delivery and operation of software across its entire lifecycle. Chef uses a declarative language called Ruby DSL to define configuration as code.
-* **Puppet**: An open source tool that automates the delivery and operation of software across its entire lifecycle. Puppet uses a declarative language called Puppet DSL to define configuration as code.
-* **PowerShell**: A cross-platform scripting language and shell that enables you to automate tasks and manage systems. PowerShell uses an imperative language called PowerShell Scripting Language to define configuration as code.
+* **Ansible**: An *open source platform* that automates infrastructure provisioning, configuration management, application deployment, and orchestration. Ansible uses a declarative language called YAML to define configuration as code.
+* **Chef**: An *open source tool* that automates the delivery and operation of software across its entire lifecycle. Chef uses a declarative language called Ruby DSL to define configuration as code.
+* **Puppet**: An *open source tool* that automates the delivery and operation of software across its entire lifecycle. Puppet uses a declarative language called Puppet DSL to define configuration as code.
+* **PowerShell**: A *cross-platform scripting language and shell* that enables you to automate tasks and manage systems. PowerShell uses an imperative language called PowerShell Scripting Language to define configuration as code.
 
 <br>
 
@@ -32,7 +32,7 @@ Some examples of configuration management tools are:
 
 Orchestration is the process of *coordinating multiple automation tasks*. It can be used to create complex and streamlined workflows that involve different types of resources, such as servers, networks, storage and databases. Orchestration can help to achieve higher efficiency, scalability and reliability in infrastructure management.
 
-One of the aspects of infrastructure as code (IaC) is Orchestration. With IaC, you can use Orchestration tools to automate the creation and configuration of infrastructure components across different environments and platforms. 
+With IaC, you can use Orchestration tools to **automate the creation and configuration of infrastructure components** across different environments and platforms. 
 
 ### Some examples of orchestration tools are:
 
@@ -40,9 +40,9 @@ One of the aspects of infrastructure as code (IaC) is Orchestration. With IaC, y
 
 * **Ansible**: An *open source platform* that automates infrastructure provisioning, configuration management, application deployment, and orchestration. Ansible uses a declarative language called YAML to define infrastructure as code.
 
-* **Kubernetes**: An open source system that automates the deployment, scaling, and management of containerized applications. Kubernetes uses a declarative language called YAML to define infrastructure as code.
+* **Kubernetes**: An *open source system* that automates the deployment, scaling, and management of containerized applications. Kubernetes uses a declarative language called YAML to define infrastructure as code.
 
-* **AWS CloudFormation**: A service that provides a common language for you to model and provision AWS and third-party application resources in your cloud environment. AWS CloudFormation uses a declarative language called JSON or YAML to define infrastructure as code.
+* **AWS CloudFormation**: A *service* that provides a common language for you to model and provision AWS and third-party application resources in your cloud environment. AWS CloudFormation uses a declarative language called JSON or YAML to define infrastructure as code.
 
 <br>
 
