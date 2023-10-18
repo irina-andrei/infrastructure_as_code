@@ -44,6 +44,11 @@ With IaC, you can use Orchestration tools to **automate the creation and configu
 
 * **AWS CloudFormation**: A *service* that provides a common language for you to model and provision AWS and third-party application resources in your cloud environment. AWS CloudFormation uses a declarative language called JSON or YAML to define infrastructure as code.
 
+### Why we are using Terraform for Orchestration:
+Terraform is a powerful tool for managing infrastructure that provides *a high-level view of the infrastructure* and allows for easy incremental changes. It is **particularly well-suited for complex tasks** such as *provisioning multi-cloud, configuring environments and clusters*. 
+
+Terraform also has **a modular design**, is simple and easy-to-learn and maintains the state of the resources created. It allows import of existing resources to bring them in Terraform state and has **seamless integration with CI/CD pipelines**. 
+
 <br>
 
 ![AltText](Images/diagram.png)
@@ -233,8 +238,18 @@ sudo ansible web -a "date"
 ![AltText](Images/web_date.png)
 
 
+16. Add the database IP to hosts:
+
+![AltText](Images/correct_hosts.png)
+
+17. Ping both of the instances:
+
+![AltText](Images/pinging_both.png)
+
+
 
 <br>
+
 
 
 ## Ansible Playbooks
@@ -249,6 +264,7 @@ Playbooks can:
 * orchestrate steps of any manual ordered process, on multiple sets of machines, in a defined order
 * launch tasks synchronously or asynchronously
 
+<br>
 
 ### a) Install-nginx Playbook
 
@@ -306,6 +322,7 @@ sudo ansible web -a "sudo systemctl status nginx"
 
 ![AltText](Images/status_nginx.png)
 
+<br>
 
 ### b) Install-node.js Playbook
 
@@ -371,6 +388,143 @@ sudo ansible-playbook install-nodejs.yaml
 ```
 
 ![AltText](Images/successful_nodejs_install.png)
+
+<br>
+
+### c) mongoDB-setup Playbook
+
+1. Creating and editing **the mongoDB Playbook**:
+
+```shell
+sudo nano mongo-playbook.yaml
+```
+
+2. Add the following commands:
+
+```shell
+
+# This Playbook will set up MongoDB in the DB EC2
+
+---
+
+# Agent node name/IP
+
+- hosts: db
+
+# Gather Facts
+  gather_facts: yes
+
+# Provide admin access
+  become: true
+
+# Provide Instructions
+  tasks:
+  - name: set up mongodb indb ec2
+    apt: pkg=mongodb state=present
+
+# Ensure DB is in a running state by saying 'present'. If not, you can type 'absent'
+```
+
+![AltText](Images/playbook_mongodb_yaml.png)
+
+3. To run the mongo Playbook:
+
+```shell
+sudo ansible-playbook mongo-playbook.yaml
+```
+
+![AltText](Images/running_mongodb_playbook.png)
+
+<br>
+
+### d) mongoDB Bind-IP-Change Playbook
+
+1. Creating and editing **change-bindip.yaml Playbook**:
+
+2. Add the following commands:
+
+```shell
+# This Playbook will Configure BindIP to accept requests from 0.0.0.0
+
+---
+
+# Agent node name/IP
+
+- hosts: db
+
+# Gather Facts
+  gather_facts: yes
+
+# Provide admin access
+  become: true
+
+# Provide Instructions
+  tasks:
+  - name: Update BindIP in the mongod.conf file
+    replace:
+      path: /etc/mongodb.conf
+      regexp: 'bind_ip = 127.0.0.1'
+      replace: 'bind_ip = 0.0.0.0'
+```
+
+![AltText](Images/playbook_change_bindip_yaml.png)
+
+If you want, instead of using ad-hoc commands, you can also add restart and enable MongoDB to the playbook:
+
+```shell
+  - name: Restart MongoDB Service
+    service:
+      name: mongodb
+      state: restarted
+
+  - name: Enable MongoDB Service on Boot
+    service:
+      name: mongodb
+      enabled: yes
+```
+
+3. To run the change-bindip Playbook:
+
+```shell
+sudo ansible-playbook change-bindip.yaml
+```
+
+4. Checking the change to the `mongodb.conf` file:
+
+![AltText](Images/mongodb_conf_file.png)
+
+
+<br>
+
+### After running all the Playbooks: 
+
+1. Restarting MongoDB and checking the status:
+
+```shell
+sudo ansible db -a "sudo systemctl restart mongodb"
+
+sudo ansible db -a "sudo systemctl enable mongodb"
+
+sudo ansible db -a "sudo systemctl status mongodb"
+```
+
+![AltText](Images/restart_enable_status.png)
+
+
+2. Go to your App Instance and export the DB IP:
+
+```shell
+export DB_HOST=mongodb://54.246.157.248:27017/posts
+```
+
+3. Restart the App. 
+
+```shell
+pm2 kill
+pm2 start app.js
+```
+
+![AltText](Images/app.png)
 
 <br>
 
