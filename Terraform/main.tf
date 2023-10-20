@@ -2,7 +2,7 @@
 provider "aws" {
 
 # Location of AWS
-  region = var.aws-region #"eu-west-1"
+  region = var.aws-region 
 
 }
 
@@ -11,7 +11,7 @@ provider "aws" {
 # Create a service/resource on the cloud - EC2 on AWS
 
 resource "aws_instance" "irina-iac-test" {
-  ami = var.web-app_ami_id #"ami-0943382e114f188e8"
+  ami = var.web-app_ami_id 
   instance_type = "t2.micro"
   tags = {
 	Name = "tech254-irina-iac-tf-test"
