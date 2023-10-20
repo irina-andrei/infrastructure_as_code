@@ -83,7 +83,7 @@ resource "aws_instance" "irina-iac-test" {
 
 ![AltText](Images/correct_main_tf.png)
 
-```
+```shell
 cat main.tf
 ```
 
@@ -91,7 +91,7 @@ cat main.tf
 
 9. Initialise Terraform:
 
-```
+```shell
 terraform init
 ```
 
@@ -108,7 +108,7 @@ terraform plan
 
 11. Apply and create the instance:
 
-```
+```shell
 terraform apply
 # this will run and create a resource.
 ```
@@ -124,7 +124,7 @@ It will ask 'Are you sure?' - Enter 'yes'.
 
 12. Deleting the instance:
 
-```
+```shell
 terraform destroy
 # this will delete the instance.
 ```
