@@ -265,3 +265,9 @@ After running the `terraform plan` and `terraform apply` commands, your VPC will
 Sources:
 - [Guided Steps on Installing Terraform](https://build5nines.com/install-terraform-on-windows-for-use-in-command-prompt-and-powershell/)
 - [How to Create an Environment Variable in Windows](https://kb.wisc.edu/cae/page.php?id=24500)
+- [Terraform.io - VPC](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc)
+- [Terraform.io - ](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group)
+- [Terraform.io - Subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet)
+- [Terraform.io - Internet Gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/internet_gateway)
+- [Terraform.io - Route Table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table)
+- [Terraform.io - Route Table Association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association.html)
